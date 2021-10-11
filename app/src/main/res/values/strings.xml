@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WhiteBoard</string>
+    <string name="bsize">Size</string>
+    <string name="color_select">color select</string>
+    <string name="eraser">Eraser</string>
+    <string name="save">Save</string>
+</resources>
