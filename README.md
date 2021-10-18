@@ -19,8 +19,6 @@ Then pull it after setting remote origin.
 
 ## Promotions
 
-![Logo](https://github.com/deep-sekhar/White-Board/blob/main/PROMOTIONS/Cool!%20Fantastic!%20Amazing!%20-%20Awesome.png?raw=true)
-
 [![Watch the video](https://github.com/deep-sekhar/White-Board/blob/main/PROMOTIONS/Cool!%20Fantastic!%20Amazing!%20-%20Awesome.png?raw=true)](https://www.youtube.com/watch?v=iP5rK4Xf7m8)
 
 ## Available on PlayStore
