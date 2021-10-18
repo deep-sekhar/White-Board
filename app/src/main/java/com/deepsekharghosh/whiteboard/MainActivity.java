@@ -15,8 +15,11 @@ import android.widget.Toast;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.kyanogen.signatureview.SignatureView;
 
 import java.io.ByteArrayInputStream;
@@ -49,6 +52,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //        FILE NAMING
+        SimpleDateFormat format = new SimpleDateFormat("yyMMdd_HHmmss", Locale.getDefault());
+        String date = format.format(new Date());
+        filename =  path + "/" + date + ".png";
+        //        PATH NOT EXIST THEN
+        if(!path.exists())
+        {
+            path.mkdirs();
+        }
+
+
 //        DRAWING DEFAULT COLOR
         default_color = ContextCompat.getColor(MainActivity.this,R.color.black);
 
@@ -70,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
                 permissionToken.continuePermissionRequest();
             }
-
         }).check();
 
 //        BUTTONS
@@ -126,30 +139,36 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!signatureView.isBitmapEmpty())
                 {
-                    SimpleDateFormat format = new SimpleDateFormat("yyMMdd_HHmmss", Locale.getDefault());
-                    String date = format.format(new Date());
-                    filename = path + "/" + date + ".png";
-
-                    if(!path.exists())
-                    {
-                        path.mkdirs();
-                    }
-                    File file = new File(filename);
-
-                    Bitmap bitmap = signatureView.getSignatureBitmap();
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG,0,bos);
-                    byte[] bitmapData = bos.toByteArray();
-                    FileOutputStream fos = null;
-                    try {
-                        fos = new FileOutputStream(file);
-                    } catch (FileNotFoundException e) { e.printStackTrace(); }
-                    try {fos.write(bitmapData); } catch (IOException e) { e.printStackTrace(); }
-                    try { fos.flush(); } catch (IOException e) { e.printStackTrace(); }
-                    try { fos.close(); } catch (IOException e) { e.printStackTrace(); }
-                    Toast.makeText(MainActivity.this, "saved", Toast.LENGTH_SHORT).show();
+                    saveImage();
                 }
             }
         });
+    }
+
+    private void saveImage(){
+
+        //create a file to write bitmap data
+        File file = null;
+        try {
+            file = new File(filename);
+            file.createNewFile();
+//            Toast.makeText(MainActivity.this, "--"+file.toString(), Toast.LENGTH_SHORT).show();
+        //Convert bitmap to byte array
+            Bitmap bitmap = signatureView.getSignatureBitmap();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0 , bos); // YOU can also save it in JPEG
+            byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            Toast.makeText(MainActivity.this, "SAVED!", Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+//            Toast.makeText(MainActivity.this, "COULDN'T SAVE! "+e.toString(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 }
