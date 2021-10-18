@@ -1,4 +1,4 @@
-# Music-Player-v1
+# White Board
 
 ![Logo](https://github.com/deep-sekhar/White-Board/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png?raw=true)
 
